@@ -7,12 +7,12 @@ import iconSun from "../assets/icon-sun.svg";
 import iconMoon from "../assets/icon-moon.svg";
 import iconSearch from "../assets/icon-search.svg";
 
-const TopArea = ({ setRepo, page, setLoading }: TopAreaProps) => {
+const TopArea = ({ setRepo, page, setPage, setLoading }: TopAreaProps) => {
   const { changeTheme, lightMode } = useContext(ThemeContext);
   const [empty, setEmpty] = useState<boolean>(false);
   const [notFound, setNotFound] = useState<boolean>(false);
   const repoNameRef = useRef<HTMLInputElement>(null);
-  const [inputRepo] = useState<string>('github');
+  const [inputRepo, setInputRepo] = useState<string>("github");
 
   function handleSubmit() {
     if (
@@ -20,18 +20,22 @@ const TopArea = ({ setRepo, page, setLoading }: TopAreaProps) => {
       repoNameRef.current?.value === undefined
     ) {
       setEmpty(true);
+
+      setInputRepo("");
       setRepo(null);
       return;
     }
 
     setEmpty(false);
-    fetchRepo(repoNameRef.current.value, 1, 30);
+    setPage(1);
+    fetchRepo(repoNameRef.current.value, 1, 20);
   }
 
   async function fetchRepo(repo: string, page: number, perPage: number) {
+    setInputRepo(repo);
     const queryTerm = `q=${repo}`;
     const queryPage = `&page=${page || 1}`;
-    const queryPerPage = `&per_page=${perPage || 30}`;
+    const queryPerPage = `&per_page=${perPage || 20}`;
     const queryString = queryTerm + queryPerPage + queryPage;
 
     setLoading(true);
@@ -54,7 +58,7 @@ const TopArea = ({ setRepo, page, setLoading }: TopAreaProps) => {
   }
 
   useEffect(() => {
-    fetchRepo(inputRepo, page, 30);
+    fetchRepo(inputRepo, page, 20);
   }, [inputRepo, page]);
 
   return (
@@ -99,7 +103,6 @@ const TopArea = ({ setRepo, page, setLoading }: TopAreaProps) => {
     </>
   );
 };
-
 
 const Container = styled.header`
   width: 100%;

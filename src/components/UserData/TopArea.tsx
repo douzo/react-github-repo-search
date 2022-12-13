@@ -1,7 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 import { formattedDate } from "../../utils/formatter";
-
 
 interface TopAreaProps {
   full_name: string;
@@ -13,26 +12,28 @@ interface TopAreaProps {
 }
 
 export const TopArea = ({
-  full_name, description, svn_url, created_at, avatar_url, ownerName
-}:TopAreaProps ) => {
+  full_name,
+  description,
+  svn_url,
+  created_at,
+  avatar_url,
+  ownerName,
+}: TopAreaProps) => {
   return (
     <>
       <Info>
         <Pfp src={avatar_url} alt={ownerName} />
         <SideInfo>
           <Name>
-          <a href={svn_url}>{full_name}</a>
+            <a href={svn_url}>{full_name}</a>
           </Name>
-          <Bio>
-            {description}
-          </Bio>
-          <CreatedAt>Created {formattedDate(created_at.toString())}</CreatedAt>
+          <Bio>{description}</Bio>
+          {/* <CreatedAt>Created {formattedDate(created_at.toString())}</CreatedAt> */}
         </SideInfo>
       </Info>
-      </>
-  )
-}
-
+    </>
+  );
+};
 
 const Info = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ const Bio = styled.p`
   margin: 1rem 0 1.2rem;
   @media (min-width: 768px) {
     margin: 1rem 0 1.2rem;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 `;
 
@@ -67,8 +68,10 @@ const Pfp = styled.img`
 
 const SideInfo = styled.div`
   display: grid;
+
+  word-break: break-word;
   @media (min-width: 900px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     word-break: break-word;
     /* grid-template-columns: 5fr 2fr;
     grid-template-rows: 1fr 1fr; */
@@ -90,7 +93,6 @@ const Name = styled.strong`
     font-size: 2.7rem;
   }
 `;
-
 
 const CreatedAt = styled.span`
   font-size: 1.4rem;

@@ -126,4 +126,5 @@ export interface TopAreaProps {
   setRepo: (repo: RepoProps | null) => void;
   page: number;
   setLoading: (loader: boolean) => void;
+  setPage: (page: number) => void;
 }

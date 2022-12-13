@@ -16,7 +16,7 @@ function App() {
   }
 
   const handlePagination = (direction: string) => {
-    let offset = page * 31;
+    let offset = page * 20;
     let results = repo?.total_count || 0;
     if (direction === "prev" && page >= 2) {
       setPage(page - 1);
@@ -25,46 +25,49 @@ function App() {
       setPage(page + 1);
     }
   };
+
   return (
     <ThemeContextProvider>
       <Container>
-        <TopArea setRepo={setRepoData} page={page} setLoading={setLoading} />
+        <TopArea
+          setRepo={setRepoData}
+          page={page}
+          setPage={setPage}
+          setLoading={setLoading}
+        />
 
         <TotalResults>{repo?.total_count || 0} results</TotalResults>
         {loading ? (
-          <Loading>
-          </Loading>
-        ) :
-            <>
-        <ListView>
-          {(repo?.items || []).map((r) => {
-            return <Index item={r}></Index>;
-          })}
-        </ListView>
+          <Loading></Loading>
+        ) : (
+          <>
+            <ListView>
+              {(repo?.items || []).map((r) => {
+                return <Index item={r}></Index>;
+              })}
+            </ListView>
 
-        <Pagination>
-          <Icon onClick={() => handlePagination("prev")}>Prev</Icon>
-          <PageText>Page {page}</PageText>
-          <Icon onClick={() => handlePagination("next")}>Next</Icon>
-              </Pagination>
-              </>
-        }
+            <Pagination>
+              <Icon onClick={() => handlePagination("prev")}>Prev</Icon>
+              <PageText>Page {page}</PageText>
+              <Icon onClick={() => handlePagination("next")}>Next</Icon>
+            </Pagination>
+          </>
+        )}
       </Container>
     </ThemeContextProvider>
   );
 }
 
-
-
 const Loading = styled.div`
-:before,
-:after {
-  background: #ffffff;
-  -webkit-animation: load1 1s infinite ease-in-out;
-  animation: load1 1s infinite ease-in-out;
-  width: 1em;
-  height: 4em;
-}
+  :before,
+  :after {
+    background: #ffffff;
+    -webkit-animation: load1 1s infinite ease-in-out;
+    animation: load1 1s infinite ease-in-out;
+    width: 1em;
+    height: 4em;
+  }
 
   color: #ffffff;
   text-indent: -9999em;
@@ -77,53 +80,52 @@ const Loading = styled.div`
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
 
-:before,
-:after {
-  position: absolute;
-  top: 0;
-  content: '';
-}
-:before {
-  left: -1.5em;
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
-}
-:after {
-  left: 1.5em;
-}
-@-webkit-keyframes load1 {
-  0%,
-  80%,
-  100% {
-    box-shadow: 0 0;
-    height: 4em;
+  :before,
+  :after {
+    position: absolute;
+    top: 0;
+    content: "";
   }
-  40% {
-    box-shadow: 0 -2em;
-    height: 5em;
+  :before {
+    left: -1.5em;
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
   }
-}
-@keyframes load1 {
-  0%,
-  80%,
-  100% {
-    box-shadow: 0 0;
-    height: 4em;
+  :after {
+    left: 1.5em;
   }
-  40% {
-    box-shadow: 0 -2em;
-    height: 5em;
+  @-webkit-keyframes load1 {
+    0%,
+    80%,
+    100% {
+      box-shadow: 0 0;
+      height: 4em;
+    }
+    40% {
+      box-shadow: 0 -2em;
+      height: 5em;
+    }
   }
-}
-
+  @keyframes load1 {
+    0%,
+    80%,
+    100% {
+      box-shadow: 0 0;
+      height: 4em;
+    }
+    40% {
+      box-shadow: 0 -2em;
+      height: 5em;
+    }
+  }
 `;
+
 const PageText = styled.span`
   font-size: 1.5rem;
   color: ${(props) => props.theme.colors.textNorm};
-`; 
+`;
 
 const Icon = styled.button`
-
   background: #0079ff;
   border: none;
   height: 100%;
@@ -145,6 +147,7 @@ const Icon = styled.button`
     font-size: 1.7rem;
   }
 `;
+
 const Pagination = styled.div`
   display: flex;
   gap: 2rem;
@@ -156,6 +159,7 @@ const Pagination = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const TotalResults = styled.div`
   width: 100%;
   max-width: 73.3rem;
@@ -172,7 +176,9 @@ const ListView = styled.li`
   margin: 0 auto;
   display: grid;
   gap: 1rem;
-
+  @media (max-width: 600px) {
+    display: list-item;
+  }
   @media (min-width: 600px) {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -180,6 +186,7 @@ const ListView = styled.li`
     grid-template-columns: repeat(3, 1fr);
   }
 `;
+
 const Container = styled.main`
   min-height: 100vh;
   display: flex;
